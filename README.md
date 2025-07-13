@@ -125,7 +125,7 @@ python3 cli.py point sentinel --coords coords.csv --year 2022 --parallel --worke
 
 This project is licensed under the MIT License. Feel free to open issues or pull requests on GitHub.
 
-Maintainer: [Your Name] ([othmane.echchabi@mail.mcgill.ca](mailto\:othmane.echchabi@mail.mcgill.ca))
+Maintainer: Othmane Echchabi ([othmane.echchabi@mail.mcgill.ca](mailto\:othmane.echchabi@mail.mcgill.ca))
 
 ---
 
