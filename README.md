@@ -1,6 +1,6 @@
 # Fertilizer Recommendation Pipeline
 
-A structured Python pipeline for downloading and processing multi-source environmental and remote-sensing datasets over arbitrary countries (default: Morocco) at a uniform \~9 km resolution. Outputs per-year summary statistics (mean, min, max, stdDev, percentiles) for temporal collections and static maps for single-image datasets.
+A structured Python pipeline for downloading and processing multi-source environmental and remote-sensing datasets over arbitrary countries (default: Morocco) at a uniform resolution. Outputs per-year summary statistics (mean, min, max, stdDev, percentiles) for temporal collections and static maps for single-image datasets.
 
 ## Directory Structure
 
