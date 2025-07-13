@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+
+# Data exports
+output/
+*.zip
+*.tif
+
+# Earth Engine auth
+gee_key.json
+
+# IDEs
+.vscode/
