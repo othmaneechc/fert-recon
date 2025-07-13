@@ -2,7 +2,7 @@
 
 A structured Python pipeline for downloading and processing multi-source environmental and remote-sensing datasets over arbitrary countries (default: Morocco) at a uniform \~9 km resolution. Outputs per-year summary statistics (mean, min, max, stdDev, percentiles) for temporal collections and static maps for single-image datasets.
 
-## 📂 Directory Structure
+## Directory Structure
 
 ```
 fert-recon/
@@ -21,14 +21,14 @@ fert-recon/
     └── point_exporter.py      # Per-coordinate point exports
 ```
 
-## ⚙️ Prerequisites
+## Prerequisites
 
 - Python 3.8+
 - [Google Earth Engine API](https://developers.google.com/earth-engine)
 - `geopandas`, `pandas`, `requests`, `retry`, `tqdm`
 - Unix-like shell (for `orchestrate.sh`)
 
-## 📦 Installation
+## Installation
 
 1. Clone this repository:
    ```bash
@@ -46,7 +46,7 @@ fert-recon/
 4. Place your GEE JSON key at `gee_key.json` or set `EE_KEY_PATH` env var.
 5. Ensure your coordinate CSV (`coords.csv`) is in the project root.
 
-## 🔑 Authentication
+## Authentication
 
 This pipeline uses a service account with JSON credentials. No interactive auth is required.
 
@@ -55,7 +55,7 @@ export EE_SERVICE_ACCOUNT="your-service-account@project.iam.gserviceaccount.com"
 export EE_KEY_PATH="/path/to/gee_key.json"
 ```
 
-## 🚀 Usage
+## Usage
 
 ### 1. SoilGrids (static soil property layers)
 
@@ -101,12 +101,12 @@ output/region/modis_ndvi_evi/2022/
 python3 cli.py point sentinel --coords coords.csv --year 2022 --parallel --workers 16 --out output/point/sentinel
 ```
 
-## 🔧 Configuration
+## Configuration
 
 - `config.py` holds default CRS, scale (9 265 m), country name, year range, and credentials.
 - `datasets.py` lists all GEE dataset IDs, band selections, native resolutions, and static flags.
 
-## ➕ Adding New Datasets
+## Adding New Datasets
 
 1. In `datasets.py`, add a new key:
    ```python
@@ -121,7 +121,7 @@ python3 cli.py point sentinel --coords coords.csv --year 2022 --parallel --worke
 2. If temporal, it will follow the composite pipeline (mean, min, max, etc.).
 3. If static, it will be clipped & downloaded once per year.
 
-## 📄 License & Contact
+## License & Contact
 
 This project is licensed under the MIT License. Feel free to open issues or pull requests on GitHub.
 
