@@ -1,24 +1,33 @@
-# Fertilizer Recommendation Pipeline
+# Fertility Reconstruction Pipeline
 
-A structured Python pipeline for downloading and processing multi-source environmental and remote-sensing datasets over arbitrary countries (default: Morocco) at a uniform resolution. Outputs per-year summary statistics (mean, min, max, stdDev, percentiles) for temporal collections and static maps for single-image datasets.
+A comprehensive pipeline for downloading, processing, and modeling multi-source environmental and remote-sensing datasets for fertility reconstruction analysis. The pipeline consists of two main components: a data pipeline for data extraction and processing, and a modeling pipeline for machine learning and analysis.
 
 ## Directory Structure
 
 ```
 fert-recon/
-├── config.py            # Global constants and EE credentials
-├── datasets.py          # Registry of datasets and metadata
-├── cli.py               # Command-line interface (soilgrids, region, point)
-├── orchestrate.sh       # Bash orchestration (loops years & datasets)
+├── data-pipeline/           # Data extraction and processing
+│   ├── scripts/                # Core processing scripts
+│   ├── config/                # Configuration files
+│   ├── exporters/             # Data exporters
+│   ├── ee_env.yml             # Environment file
+│   └── pipeline.sh            # Main pipeline script
 │
-├── utils/
-│   ├── geometry.py      # Country & point bounding box helpers
-│   └── ee_helpers.py    # EarthEngine init and download helpers
+├── modeling-pipeline/       # Machine learning and analysis
+│   ├── notebooks/             # Jupyter notebooks
+│   ├── scripts/               # Production modeling scripts
+│   ├── models/                # Trained model artifacts
+│   └── experiments/           # Experiment tracking
 │
-└── exporters/
-    ├── soilgrids_exporter.py  # Bulk download of SoilGrids layers
-    ├── region_exporter.py     # Country‑wide yearly composites & static maps
-    └── point_exporter.py      # Per-coordinate point exports
+├── shared/                  # Shared utilities
+│   └── utils/                 # Common helper functions
+│
+├── data/                    # Data storage
+│   ├── raw/                   # Original downloaded data
+│   └── processed/             # Analysis-ready datasets
+│
+├── docs/                    # Documentation
+└── README.md               # This file
 ```
 
 ## Prerequisites

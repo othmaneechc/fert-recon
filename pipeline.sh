@@ -16,7 +16,7 @@ set -euo pipefail
 
 # ─────────────────────────── USER SETTINGS ──────────────────────────────
 COUNTRY="Morocco"               # passed to cli.py
-YEARS=($(seq 2013 2015))        # change as needed
+YEARS=($(seq 2000 2015))        # change as needed
 WORKERS=16                      # if your cli.py supports parallel exports
 
 # per-year image collections
@@ -40,7 +40,7 @@ echo "===== 1. Google-Earth-Engine EXPORT ====="
 ## 1.a SoilGrids (country-wide, static)
 echo
 echo "→ SoilGrids ($COUNTRY)"
-python3 cli.py soilgrids \
+python3 data-pipeline/scripts/cli.py soilgrids \
     --country "$COUNTRY" \
     --out "output/SoilGrids"
 
@@ -51,11 +51,10 @@ for YEAR in "${YEARS[@]}"; do
     mkdir -p "$OUT"
     echo
     echo "→ $DS  •  $COUNTRY  •  $YEAR → $OUT"
-    python3 cli.py region "$DS" \
+    python3 data-pipeline/scripts/cli.py region "$DS" \
         --country "$COUNTRY" \
         --year    "$YEAR" \
-        --out     "$OUT" \
-        --workers "$WORKERS"
+        --out     "$OUT" 
   done
 done
 
@@ -65,7 +64,7 @@ echo "🎉  All EE exports finished"
 # ─────────────────────────── EXTRACTION & STACKING ─────────────────────
 echo
 echo "===== 2. Unzip → Tiles → Yearly stacks ====="
-python3 extract_all.py
+python3 data-pipeline/scripts/extract_all.py
 
 echo
 echo "🎉  Pipeline done!"

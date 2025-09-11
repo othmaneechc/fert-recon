@@ -4,13 +4,38 @@ __pycache__/
 *.egg-info/
 .env
 
+# Data files (but keep directory structure)
+*.csv
+*.tif
+*.zip
+*.hdf
+*.nc
+
+# Large dataset directories content (keep the folders)
+data/processed/*.csv
+data/raw/**/*.tif
+data/raw/**/*.zip
+data/raw/**/*.csv
+
+# Logs
+*.log
+comprehensive_csv_generation.log
+
+# Earth Engine auth  
+**/gee_key.json
+
 # Data exports
 output/
-*.zip
-*.tif
-
-# Earth Engine auth
-gee_key.json
+temp/
+tmp/
 
 # IDEs
 .vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
