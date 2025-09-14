@@ -9,7 +9,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 from config.config import TARGET_SCALE_METERS
 from config.datasets import DICO
 from shared.utils.geometry import point_bbox
-from shared.utils.ee_helpers import init_ee, get_download_url, fetch_task
+from shared.utils.ee_helpers import init_ee, get_download_url, fetch_url
 
 
 def generate_point(coord, dataset, band, sharpened, start_date, end_date, height, width, output_dir):
@@ -27,7 +27,7 @@ def generate_point(coord, dataset, band, sharpened, start_date, end_date, height
     desc = f"{dataset}_{lat:.5f}_{lon:.5f}"
     out_path = os.path.join(output_dir, f"{desc}.tif")
     url = get_download_url(img, geom, desc)
-    fetch_task((url, out_path))
+    fetch_url((url, out_path))
 
 
 def run_point(filepath, dataset, start_date, end_date, height, width, band, sharpened, output_dir, parallel, workers, redownload):

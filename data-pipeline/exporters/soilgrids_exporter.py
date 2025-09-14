@@ -8,20 +8,19 @@ from concurrent.futures import ThreadPoolExecutor
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from config.config import TARGET_SCALE_METERS
-from config.datasets import DICO
 from shared.utils.geometry import country_bbox
-from shared.utils.ee_helpers import init_ee, get_download_url, fetch_task
+from shared.utils.ee_helpers import init_ee, get_download_url, fetch_url
 
 
 def run_soilgrids(output_dir: str, country: str):
     init_ee()
     # Initialize datasets after EE is ready
-    from config.datasets import init_datasets
-    init_datasets()
+    from config import datasets
+    datasets.init_datasets()
     
     bbox = country_bbox(country)
-    layers = DICO['soilgrids']['layers']
-    crs = DICO['soilgrids']['crs']
+    layers = datasets.DICO['soilgrids']['layers']
+    crs = datasets.DICO['soilgrids']['crs']
     os.makedirs(output_dir, exist_ok=True)
     tasks = []
     for prop in tqdm(layers, desc='SoilGrids'):
@@ -31,4 +30,4 @@ def run_soilgrids(output_dir: str, country: str):
         url = get_download_url(img, bbox, desc)
         tasks.append((url, out_zip))
     with ThreadPoolExecutor() as ex:
-        list(tqdm(ex.map(fetch_task, tasks), total=len(tasks)))
+        list(tqdm(ex.map(fetch_url, tasks), total=len(tasks)))

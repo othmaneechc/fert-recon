@@ -16,6 +16,7 @@ data/processed/*.csv
 data/raw/**/*.tif
 data/raw/**/*.zip
 data/raw/**/*.csv
+data/
 
 # Logs
 *.log
