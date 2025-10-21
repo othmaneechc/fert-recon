@@ -1,23 +1,44 @@
-# ---------- config.py ----------
-# Global configuration and defaults
+# config/config.py
 import os
+from pathlib import Path
 
-TARGET_SCALE_METERS = 9265         # 5 arc-minutes ≈ 9265 meters
-DEFAULT_CRS = "EPSG:3857"
-EE_SERVICE_ACCOUNT = os.getenv(
-    "EE_SERVICE_ACCOUNT",
-    "signature-work@signature-work-403906.iam.gserviceaccount.com"
-)
-EE_KEY_PATH = os.getenv("EE_KEY_PATH", 
-                        os.path.join(os.path.dirname(__file__), "gee_key.json"))
-NATURAL_EARTH_GEOJSON = (
-    "https://raw.githubusercontent.com/nvkelso/"
-    "natural-earth-vector/master/geojson/"
-    "ne_110m_admin_0_countries.geojson"
-)
+# === Earth Engine auth ===
+# If you have a service account, set env vars GEE_SERVICE_ACCOUNT and GEE_PRIVATE_KEY (path).
+# Otherwise, we'll try user auth (interactive on first run).
+GEE_SERVICE_ACCOUNT = os.environ.get("GEE_SERVICE_ACCOUNT", None)
+GEE_PRIVATE_KEY = os.environ.get("GEE_PRIVATE_KEY", None)  # path to JSON key or raw JSON string
 
-DEFAULT_COUNTRY = os.getenv("COUNTRY", "Morocco")
-DEFAULT_START_YEAR = int(os.getenv("START_YEAR", "2022"))
-DEFAULT_END_YEAR = int(os.getenv("END_YEAR", "2022"))
-DEFAULT_OUTPUT_ROOT = os.getenv("OUTPUT_ROOT", "output")
-MAX_WORKERS = int(os.getenv("MAX_WORKERS", "16"))
+# === AOI & time ===
+# Default country for AOI (LSIB country name in EE). Change if needed.
+DEFAULT_COUNTRY = "Morocco"
+
+# Inclusive years
+START_YEAR = 2002
+END_YEAR   = 2019
+
+# === Local data roots (your paths from the prompt) ===
+FERTILIZER_DIR = "/data/oe23/fert-recon/data/Cropland_Maps"
+YIELD_DIR      = "/data/oe23/fert-recon/data/GlobalCropYield5min"
+
+# === Where to save things ===
+# GEE monthly exports (GeoTIFFs)
+GEE_EXPORT_DIR = "/data/oe23/fert-recon/exports/monthly"
+Path(GEE_EXPORT_DIR).mkdir(parents=True, exist_ok=True)
+
+# Final dataframe path (single Parquet file)
+FINAL_PARQUET = "/data/oe23/fert-recon/datasets/fert_recommendation_monthly.parquet"
+Path(Path(FINAL_PARQUET).parent).mkdir(parents=True, exist_ok=True)
+
+# === Target grid definition ===
+# We align ALL features to the grid of the FIRST TIFF found in YIELD_DIR.
+# (This ensures consistent geotransform, crs, width/height, and stable pixel_id.)
+TARGET_GRID_FROM_YIELD_DIR = YIELD_DIR
+
+# Reprojection resampling strategy
+RESAMPLING = "average"  # average for continuous variables
+
+# NFS quirks: ignore '.nfs...' temp files silently
+IGNORE_PREFIXES = (".nfs", "._")
+
+# I/O safety
+OVERWRITE_GEE_EXPORTS = False  # skip download if file exists
