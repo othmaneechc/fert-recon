@@ -7,19 +7,18 @@
 - Recommendation utilities run coordinate-ascent over fertilizer inputs for the held-out year to produce optimized fertilizer suggestions per pixel.
 
 ## Repository Layout
-- `data/` – raw static inputs referenced by the pipeline (`Cropland_Maps`, `GlobalCropYield5min`).
 - `data-pipeline/` – Earth Engine exporters, raster alignment utilities, configs, and entry-point scripts.
-- `datasets/` – parquet tables produced by the pipeline (`fert_recommendation_monthly_{crop}.parquet`).
-- `exports/` – monthly GeoTIFF stacks downloaded from Earth Engine (organized by feature).
 - `modeling-pipeline/` – training, evaluation, and recommendation code plus experiment configs.
+- `datasets_/`, `datasets_chile/`, `datasets_morocco/`, `datasets_spain/` – sample parquet outputs produced by the pipeline.
+- `exports_/` – monthly GeoTIFF stacks downloaded from Earth Engine (organized by feature) and masks.
 - `models/` – saved experiment outputs (logs, metrics, checkpoints, notebooks).
 - `ee_env.yml` – conda environment for the Earth Engine + raster preprocessing stack.
 
 ## Setup
 
 ### 1. Earth Engine credentials
-- Create a service account or enable user authentication for Google Earth Engine.
-- Populate `data-pipeline/config/gee_key.json` with the JSON key (never commit secrets). Set `GEE_SERVICE_ACCOUNT` and `GEE_PRIVATE_KEY` (path to the key file or raw JSON string) or use `GOOGLE_APPLICATION_CREDENTIALS`.
+- Use a service account or user authentication for Google Earth Engine.
+- Configure credentials via environment variables: set `GEE_SERVICE_ACCOUNT` and `GEE_PRIVATE_KEY` (path to the key file or the JSON string), or set `GOOGLE_APPLICATION_CREDENTIALS` to a service account key path. Avoid storing secrets in the repository.
 - The exporters fall back to interactive auth (`ee.Initialize()`), but service accounts are recommended for unattended runs.
 
 ### 2. Conda environment for the data pipeline
@@ -44,11 +43,11 @@ conda activate ee
    python -m scripts.export_gee_monthly --country <COUNTRY> --start_year 2002 --end_year 2019
    ```
    - The datasets pulled are defined in `config/datasets.py` (CHIRPS precipitation, ERA5-Land weather, MODIS vegetation & LST, derived VPD).
-   - Outputs land under `exports/monthly/<feature>/<YYYY>/<YYYYMM>.tif`.
+   - Outputs land under `exports_/monthly/<feature>/<YYYY>/<YYYYMM>.tif`.
 
 3. **Optional: export a static land mask**  
    ```bash
-   python -m scripts.export_land_mask --country <COUNTRY> --out_tif exports/masks/<COUNTRY>_land_mask.tif --threshold 50
+   python -m scripts.export_land_mask --country <COUNTRY> --out_tif exports_/masks/<COUNTRY>_land_mask.tif --threshold 50
    ```
 
 4. **Build the aligned monthly parquet table**  
@@ -57,8 +56,8 @@ conda activate ee
      --start_year 2002 \
      --end_year 2019 \
      --crop wheat \
-     --mask_tif exports/masks/<COUNTRY>_land_mask.tif \
-     --out datasets/fert_recommendation_monthly_wheat.parquet
+     --mask_tif exports_/masks/<COUNTRY>_land_mask.tif \
+     --out datasets_/fert_recommendation_monthly_wheat.parquet
    ```
    - Repeat for maize (switch `--crop maize`).
    - The script reprojects/averages monthly rasters to the yield grid, joins Cropland_Maps fertilizer bands, and writes one row per pixel-month with fertilizer, weather, vegetation, and yield targets.
@@ -97,8 +96,8 @@ python -m src.recommend \
 - The output CSV captures `pixel_id`, `year`, base prediction, optimized prediction, and recommended fertilizer levels per pixel.
 
 ## Data & Outputs
-- `datasets/` and `datasets_mor/` store sample parquet files for wheat and maize.
-- `exports/` and `exports_mor/` hold intermediate GeoTIFFs from Earth Engine runs.
+- `datasets_/`, `datasets_chile/`, `datasets_morocco/`, `datasets_spain/` store sample parquet files for wheat and maize.
+- `exports_/` holds intermediate GeoTIFFs and masks from Earth Engine runs.
 - `models/` organizes experiment artifacts; subdirectories correspond to different feature sets or algorithms.
 
 ## Tips & Troubleshooting
@@ -106,4 +105,3 @@ python -m src.recommend \
 - If `ee.Initialize()` fails, double-check service account permissions and that `gee_key.json` is readable by the active environment.
 - Verify that `data/Cropland_Maps` and `data/GlobalCropYield5min` contain the expected TIFF/NetCDF assets before running `build_dataframe.py`.
 - Use the provided notebooks to inspect data coverage and model outputs before launching large training jobs.
-
