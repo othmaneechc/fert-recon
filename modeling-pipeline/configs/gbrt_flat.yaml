@@ -1,0 +1,98 @@
+data:
+  wheat_path: /data/oe23/fert-recon/datasets/fert_recommendation_monthly_wheat.parquet
+  maize_path: /data/oe23/fert-recon/datasets/fert_recommendation_monthly_maize.parquet
+  crop: wheat
+  seq_len: 12
+  history_years: 1
+  min_months: 9
+  batch_size: 256
+  num_workers: 4
+  cache_in_memory: true
+  split:
+    type: temporal
+    temporal:
+      train_max_year: 2012
+      val_year: 2013
+      test_year_min: 2014
+    spatial:
+      kfolds: 5
+      fold_index: 0
+  target_col: yield_wheat
+  id_cols:
+  - pixel_id
+  - year
+  - month
+  dynamic_features:
+  - chirps_precip
+  - era5_temp2m
+  - era5_soil_moisture
+  - modis_ndvi
+  - modis_evi
+  - modis_lst_day
+  - modis_lst_night
+  - era5_vpd
+  yearly_regex: ^fert_.*
+  static_regex: ^static_.*
+  add_prev_year_yield: true
+  normalization:
+    scheme: zscore_global
+    clip_std: 5.0
+  cleaning:
+    drop_na_target: true
+    min_yield: 1e-6
+    yield_clip_quantiles:
+    - 0.005
+    - 0.995
+    require_any_fertilizer: false
+    min_dynamic_months: 10
+    downsample:
+      enable: false
+      per_year_max_sequences: 20000
+      stratify_by: yield_decile
+      seed: 1337
+training:
+  epochs: 50
+  patience: 8
+  lr: 0.0003
+  weight_decay: 0.0
+  loss: mse
+  seed: 1337
+logging:
+  out_dir: /data/oe23/fert-recon/models/exp_logs
+model:
+  type: gbrt
+  elasticnet:
+    alpha: 0.15
+    l1_ratio: 0.35
+    fit_intercept: true
+    max_iter: 8000
+    tol: 5.0e-05
+  gbrt:
+    n_estimators: 800
+    learning_rate: 0.05
+    max_depth: 3
+    subsample: 0.9
+    random_state: 1337
+preproc:
+  aggregate_to_year: mean_sum
+  sum_features:
+  - chirps_precip
+  sum_keywords:
+  - precip
+  include_prev_year_yield: true
+  seasonal_quartiles: true
+  static_cols: []
+  extra_stats:
+  - std
+  - min
+  - max
+  lag_years: 1
+  add_fertilizer_interactions: true
+  log1p_features:
+  - fert_
+  - chirps_precip
+target:
+  log_transform: true
+  log_offset: 1.0
+featureset: all
+name: wheat_gbrt

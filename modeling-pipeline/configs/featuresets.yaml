@@ -1,0 +1,17 @@
+# Feature subsets for ablations. Reference via 'featureset: <name>'
+featuresets:
+  all:
+    dynamic: [chirps_precip, era5_temp2m, era5_soil_moisture, modis_ndvi, modis_evi, modis_lst_day, modis_lst_night, era5_vpd]
+    yearly_regex: "^fert_.*"
+  weather_only:
+    dynamic: [chirps_precip, era5_temp2m, era5_soil_moisture, era5_vpd]
+    yearly_regex: ""
+  veg_lst_only:
+    dynamic: [modis_ndvi, modis_evi, modis_lst_day, modis_lst_night]
+    yearly_regex: ""
+  no_fertilizer:
+    dynamic: [chirps_precip, era5_temp2m, era5_soil_moisture, modis_ndvi, modis_evi, modis_lst_day, modis_lst_night, era5_vpd]
+    yearly_regex: ""
+  fertilizer_only:
+    dynamic: []
+    yearly_regex: "^fert_.*"

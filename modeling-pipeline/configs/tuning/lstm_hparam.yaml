@@ -1,0 +1,14 @@
+sweep:
+  description: |
+    Hyperparameter grid for the LSTM regressor with a compact set of combinations to
+    keep runtime reasonable while covering core sensitivities.
+  base_configs:
+    - ../lstm_base.yaml
+  grid:
+    data.crop: [wheat]
+    training.lr: [0.0002, 0.0003]
+    training.weight_decay: [0.0, 0.0001]
+    training.loss: [mse]
+    model.lstm.hidden_size: [256, 384]
+    model.lstm.num_layers: [2, 3]
+    model.lstm.dropout: [0.1]

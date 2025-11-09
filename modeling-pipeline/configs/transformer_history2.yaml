@@ -1,0 +1,6 @@
+include:
+  - transformer_base.yaml
+name: wheat_transformer_hist2
+data:
+  history_years: 2
+  seq_len: 24

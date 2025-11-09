@@ -1,0 +1,11 @@
+include:
+  - elasticnet_enhanced.yaml
+name: wheat_gbrt
+model:
+  type: gbrt
+  gbrt:
+    n_estimators: 800
+    learning_rate: 0.05
+    max_depth: 3
+    subsample: 0.9
+    random_state: 1337

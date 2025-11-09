@@ -1,0 +1,17 @@
+sweep:
+  description: |
+    Data- and model-regularization sweep to combat the validation→test degradation.
+    Explores normalization scheme, yield clipping strength, dynamic-month threshold,
+    transformer dropout, and light weight decay / downsampling toggles.
+  base_configs:
+    - ../transformer_base.yaml
+  grid:
+    data.crop: [wheat]
+    data.normalization.scheme: [zscore_global, zscore_by_month]
+    data.cleaning.yield_clip_quantiles:
+      - [0.005, 0.995]
+      - [0.01, 0.99]
+    data.cleaning.min_dynamic_months: [9, 10]
+    data.cleaning.downsample.enable: [false, true]
+    training.weight_decay: [0.0, 0.0001]
+    model.transformer.dropout: [0.1, 0.2]

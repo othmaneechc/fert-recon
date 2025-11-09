@@ -1,0 +1,74 @@
+sweep:
+  description: |
+    Temporal leave-one-year-out cross-validation for the gradient boosting baseline.
+    Uses the enriched tabular feature set from configs/gbrt.yaml.
+  base_configs:
+    - ../gbrt_flat.yaml
+  grid:
+    data.crop: [wheat]
+  cases:
+    - name: wheat_gbrt_val2002_test2003
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2002
+        data.split.temporal.test_year: 2003
+    - name: wheat_gbrt_val2003_test2004
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2003
+        data.split.temporal.test_year: 2004
+    - name: wheat_gbrt_val2004_test2005
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2004
+        data.split.temporal.test_year: 2005
+    - name: wheat_gbrt_val2005_test2006
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2005
+        data.split.temporal.test_year: 2006
+    - name: wheat_gbrt_val2006_test2007
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2006
+        data.split.temporal.test_year: 2007
+    - name: wheat_gbrt_val2007_test2008
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2007
+        data.split.temporal.test_year: 2008
+    - name: wheat_gbrt_val2008_test2009
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2008
+        data.split.temporal.test_year: 2009
+    - name: wheat_gbrt_val2009_test2010
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2009
+        data.split.temporal.test_year: 2010
+    - name: wheat_gbrt_val2010_test2011
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2010
+        data.split.temporal.test_year: 2011
+    - name: wheat_gbrt_val2011_test2012
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2011
+        data.split.temporal.test_year: 2012
+    - name: wheat_gbrt_val2012_test2013
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2012
+        data.split.temporal.test_year: 2013
+    - name: wheat_gbrt_val2013_test2014
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2013
+        data.split.temporal.test_year: 2014
+    - name: wheat_gbrt_val2014_test2015
+      overrides:
+        data.split.temporal.strategy: leaveout
+        data.split.temporal.val_year: 2014
+        data.split.temporal.test_year: 2015

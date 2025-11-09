@@ -1,0 +1,19 @@
+include:
+  - dataset_common.yaml
+model:
+  type: transformer
+  transformer:
+    d_model: 256
+    nhead: 8
+    n_layers: 6
+    dim_feedforward: 768
+    dropout: 0.1
+    posenc: sine            # sine|learned|month_embed
+    use_static_token: true
+    use_film: true
+  head: mlp
+  head_hidden: 256
+  head_layers: 2
+training:
+  weight_decay: 1.0e-4
+featureset: all

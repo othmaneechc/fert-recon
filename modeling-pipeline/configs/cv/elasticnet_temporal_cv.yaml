@@ -1,0 +1,116 @@
+sweep:
+  description: |
+    Temporal leave-one-year-out sweep for the ElasticNet log-yield baseline.
+    Each fold withholds one validation year and the following test year while
+    training on the remainder to assess generalisation across seasons.
+  base_configs:
+    - ../elasticnet_enhanced.yaml
+  grid:
+    data.crop: [wheat]
+    model.elasticnet.alpha: [0.05, 0.1, 0.15, 0.3, 0.5]
+    model.elasticnet.l1_ratio: [0.1, 0.35, 0.6, 0.9]
+  cases:
+    - name: wheat_elasticnet_val2002_test2003
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2002
+              test_year: 2003
+    - name: wheat_elasticnet_val2003_test2004
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2003
+              test_year: 2004
+    - name: wheat_elasticnet_val2004_test2005
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2004
+              test_year: 2005
+    - name: wheat_elasticnet_val2005_test2006
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2005
+              test_year: 2006
+    - name: wheat_elasticnet_val2006_test2007
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2006
+              test_year: 2007
+    - name: wheat_elasticnet_val2007_test2008
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2007
+              test_year: 2008
+    - name: wheat_elasticnet_val2008_test2009
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2008
+              test_year: 2009
+    - name: wheat_elasticnet_val2009_test2010
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2009
+              test_year: 2010
+    - name: wheat_elasticnet_val2010_test2011
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2010
+              test_year: 2011
+    - name: wheat_elasticnet_val2011_test2012
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2011
+              test_year: 2012
+    - name: wheat_elasticnet_val2012_test2013
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2012
+              test_year: 2013
+    - name: wheat_elasticnet_val2013_test2014
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2013
+              test_year: 2014
+    - name: wheat_elasticnet_val2014_test2015
+      overrides:
+        data:
+          split:
+            temporal:
+              strategy: leaveout
+              val_year: 2014
+              test_year: 2015

@@ -1,0 +1,21 @@
+include:
+  - dataset_common.yaml
+model:
+  type: elasticnet
+  elasticnet:
+    alpha: 0.3
+    l1_ratio: 0.2
+    fit_intercept: true
+    max_iter: 5000
+    tol: 1.0e-4
+preproc:
+  aggregate_to_year: mean_sum
+  sum_features: [chirps_precip]
+  include_prev_year_yield: true
+  sum_keywords: ["precip"]
+target:
+  log_transform: true
+  log_offset: 1.0
+featureset: all
+logging:
+  out_dir: /data/oe23/fert-recon/models/exp_logs

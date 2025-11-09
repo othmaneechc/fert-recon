@@ -1,0 +1,16 @@
+include:
+  - dataset_common.yaml
+model:
+  type: lstm
+  lstm:
+    hidden_size: 384
+    num_layers: 3
+    dropout: 0.1
+    bidirectional: false
+  head: mlp
+  head_hidden: 256
+  head_layers: 2
+training:
+  lr: 2.0e-4
+  weight_decay: 0.0
+featureset: all

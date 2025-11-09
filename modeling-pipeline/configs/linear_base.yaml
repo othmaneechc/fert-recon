@@ -1,0 +1,8 @@
+include:
+  - dataset_common.yaml
+model:
+  type: linear
+preproc:
+  aggregate_to_year: mean_sum
+  include_prev_year_yield: true
+featureset: all

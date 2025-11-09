@@ -1,0 +1,12 @@
+sweep:
+  description: |
+    Structural sweep over sequence handling to test whether longer temporal context or
+    alternative positional encodings improve generalization.
+  base_configs:
+    - ../transformer_base.yaml
+  grid:
+    data.crop: [wheat]
+    data.seq_len: [12, 18, 24]
+    data.min_months: [9, 10, 12]
+    data.add_prev_year_yield: [true, false]
+    model.transformer.posenc: [sine, month_embed]

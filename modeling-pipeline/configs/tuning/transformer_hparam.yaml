@@ -1,0 +1,17 @@
+sweep:
+  description: |
+    Hyperparameter grid for the transformer regressor targeting generalization issues
+    observed in the baseline run (validation RMSE≈271 but test RMSE≈429). Focuses on
+    optimization rate, depth, and regularization that the current training loop
+    natively supports.
+  base_configs:
+    - ../transformer_base.yaml
+  grid:
+    data.crop: [wheat]
+    training.lr: [0.0002, 0.0003, 0.0004]
+    training.weight_decay: [0.0, 0.0001]
+    training.loss: [mse, huber]
+    model.transformer.n_layers: [4, 6]
+    model.transformer.dropout: [0.1, 0.2]
+    model.transformer.dim_feedforward: [768]
+    model.head_layers: [2]

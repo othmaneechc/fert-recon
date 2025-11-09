@@ -1,0 +1,51 @@
+# Common dataset settings shared by experiments
+data:
+  wheat_path: /data/oe23/fert-recon/datasets/fert_recommendation_monthly_wheat.parquet
+  maize_path: /data/oe23/fert-recon/datasets/fert_recommendation_monthly_maize.parquet
+  crop: wheat               # override per-run: wheat|maize
+  seq_len: 12               # months per example (use 24 in ablations)
+  history_years: 1          # number of consecutive years included per sample
+  min_months: 9             # require at least this many non-NaN months
+  batch_size: 256
+  num_workers: 4
+  cache_in_memory: true     # speeds up if RAM allows
+  # splits
+  split:
+    type: temporal          # temporal|spatial|random
+    temporal:
+      train_max_year: 2012
+      val_year: 2013
+      test_year_min: 2014
+    spatial:
+      kfolds: 5
+      fold_index: 0
+  # targets & features
+  target_col: yield_${crop}
+  id_cols: [pixel_id, year, month]
+  dynamic_features: [chirps_precip, era5_temp2m, era5_soil_moisture, modis_ndvi, modis_evi, modis_lst_day, modis_lst_night, era5_vpd]
+  yearly_regex: "^fert_.*"  # yearly fertilizer features; repeated per month
+  static_regex: "^static_.*"          # optional static cols; blank = none
+  add_prev_year_yield: true # add previous year's yield as a feature when available
+  normalization:
+    scheme: zscore_global   # zscore_global|zscore_by_month|none
+    clip_std: 5.0           # robust clipping after z-score
+  cleaning:
+    drop_na_target: true
+    min_yield: 1e-6             # remove zero/negative yield
+    yield_clip_quantiles: [0.005, 0.995]   # clip outliers using TRAIN-only quantiles
+    require_any_fertilizer: false          # set true if you want only pixels with fert>0
+    min_dynamic_months: 10                 # sequences must have >= this many valid months
+    downsample:
+      enable: false                         # set true to cap training size
+      per_year_max_sequences: 20000         # cap train sequences per year
+      stratify_by: yield_decile             # yield_decile|random
+      seed: 1337
+training:
+  epochs: 50
+  patience: 8
+  lr: 3.0e-4
+  weight_decay: 0.0
+  loss: mse                 # mse|huber
+  seed: 1337
+logging:
+  out_dir: /data/oe23/fert-recon/models/exp_logs
